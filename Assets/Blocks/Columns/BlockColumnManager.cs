@@ -137,7 +137,16 @@ public class BlockColumnManager : MonoBehaviour
                 "time", SlideBlockDuration,
                 "delay", 0,
                 "easeType", "easeInCirc",
-                "onupdateinline", (Action<object>)(updatedValue => {if (removedBlock != null) removedBlock.transform.position = (Vector3)updatedValue;}),
+                "onupdateinline", (Action<object>)(updatedValue => {if (removedBlock != null)
+                    {
+                        removedBlock.transform.position = (Vector3)updatedValue;
+                        var shovedPlayer = removedBlock.GetComponent<Block>().GetPlayerInDirection(direction);
+                        if (shovedPlayer != null)
+                        {
+                            shovedPlayer.GetComponent<PlayerController>().ImpulseShove(direction);
+                        }
+                    }
+                }),
                 "oncompleteinline",(Action<object>)(
                     completeParameters =>
                     {

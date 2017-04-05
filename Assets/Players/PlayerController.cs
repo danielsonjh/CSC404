@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     private bool _canPerformAction;
     private bool _canMoveWhenPush;
     private bool _isPulling;
+    private bool _isShoved;
 
     private Rigidbody _rigidbody;
     private Animator _anim;
@@ -74,8 +75,10 @@ public class PlayerController : MonoBehaviour
         _canPerformAction = true;
         _canMoveWhenPush = true;
         _isPulling = false;
+        _isShoved = false;
         _rigidbody.useGravity = true;
         _rigidbody.isKinematic = false;
+        _rigidbody.constraints &= ~RigidbodyConstraints.FreezePositionX;
         GetComponent<Rigidbody>().velocity = Vector3.zero;
 
         if (DisplayTutorialOnSpawn) {
@@ -431,6 +434,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void ImpulseShove(Vector3 direction)
+    {
+        if (!_isShoved && !_isPulling)
+        {
+            _isShoved = true;
+            _rigidbody.constraints |= RigidbodyConstraints.FreezePositionX;
+            _rigidbody.AddForce(direction, ForceMode.Impulse);
+        }
+    }
+
     private IEnumerator ActionDelayCoroutine()
     {
         _canPerformAction = false;
@@ -543,4 +556,5 @@ public class PlayerController : MonoBehaviour
             completion();
         }
     }
+
 }
