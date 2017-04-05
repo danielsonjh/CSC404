@@ -25,7 +25,7 @@ public class PlayerDeathController : MonoBehaviour
         {
             var collidingObject = other.gameObject;
             var isUnderBlock = Mathf.Abs(gameObject.transform.position.x - collidingObject.transform.position.x) < 0.5
-                               && gameObject.transform.position.y < collidingObject.transform.position.y;
+                               && gameObject.transform.position.y + 0.05 < collidingObject.transform.position.y;
             if (isUnderBlock)
             {
                 var blockComponent = other.gameObject.GetComponent<Block>();
